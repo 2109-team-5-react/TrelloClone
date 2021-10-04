@@ -1,35 +1,35 @@
-const Board = require("../models/board");
+const List = require("../models/list");
 const HttpError = require("../models/httpError");
 const { validationResult } = require("express-validator");
 
-const getBoards = (req, res, next) => {
-  Board.find({}).then((boards) => {
+const getLists = (req, res, next) => {
+  List.find({}).then((lists) => {
     //, "title _id createdAt updatedAt").then((boards) => {
     res.json({
-      boards,
+      lists,
     });
   });
 };
 
-const getBoard = (req, res, next) => {
-  Board.find({ _id: req.params.id }).then(
+const getList = (req, res, next) => {
+  List.find({ _id: req.params.id }).then(
     //), "title _id createdAt updatedAt").then(
-    (board) => {
+    (list) => {
       res.json({
-        board,
+        list,
       });
     }
   );
 };
 
-const createBoard = (req, res, next) => {
+const createList = (req, res, next) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
-    Board.create(req.body.board)
-      .then((board) => {
-        Board.find({ _id: board._id }).then(
+    List.create(req.body.list)
+      .then((list) => {
+        List.find({ _id: list._id }).then(
           //), "title _id createdAt updatedAt").then(
-          (board) => res.json({ board })
+          (list) => res.json({ list })
         );
       })
       .catch((err) =>
@@ -40,6 +40,6 @@ const createBoard = (req, res, next) => {
   }
 };
 
-exports.getBoards = getBoards;
-exports.getBoard = getBoard;
-exports.createBoard = createBoard;
+exports.getLists = getLists;
+exports.getList = getList;
+exports.createList = createList;
