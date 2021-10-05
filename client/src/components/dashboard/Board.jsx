@@ -4,12 +4,17 @@ import { useDispatch} from 'react-redux';
 import { useParams } from 'react-router';
 import { fetchBoard } from '../../actions/BoardActions';
 import ExistingLists from './ExistingLists';
+import { useSelector } from 'react-redux';
 
 
 const Board = () => {
   const dispatch = useDispatch()
   const id = useParams().id;
-  
+  const board = useSelector((state) => {
+    return state.boards.filter((b) => {
+      return id === b._id.toString()
+    })[0]
+  })
   useEffect(() => {
     dispatch(fetchBoard(id))
   }, [id])
@@ -17,7 +22,7 @@ const Board = () => {
     <>
        <header>
         <ul>
-          <li id="title">My Title</li>
+          <li id="title">{board.title}</li>
           <li className="star-icon icon"></li>
           <li className="private private-icon icon">Private</li>
         </ul>

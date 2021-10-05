@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const List = require('./List')
 
+
 const BoardSchema = new Schema(
   {
     title: {

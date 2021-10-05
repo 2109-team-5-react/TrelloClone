@@ -15,10 +15,11 @@ const getBoards = (req, res, next) => {
 };
 
 const getBoard = (req, res, next) => {
-  Board.findOne({ _id: req.params.id }).populate('lists').then(
+  Board.findOne({ _id: req.params.id }).populate({path: 'lists', populate: {path: 'cards'}}).then(
     //), "title _id createdAt updatedAt").then(
     (board) => {
-      console.log(board)
+      
+      console.log(board) 
       res.json({
         board,
       });

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
+const Card = require('./Card')
 const ListSchema = new Schema(
   {
     title: {
