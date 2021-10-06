@@ -1,4 +1,4 @@
-const Board = require("../models/board");
+const Board = require("../models/Board");
 const HttpError = require("../models/httpError");
 const { validationResult } = require("express-validator");
 
@@ -48,6 +48,17 @@ const createBoard = (req, res, next) => {
   }
 };
 
+const addListToBoard = (req, res, next) => {
+  const list = req.list;
+  const boardId = req.list.boardId;
+  Board.findByIdAndUpdate(boardId, {
+    $addToSet: { lists: list._id }, // adds list to the lists array in board
+  }).then(() => {
+    next();
+  });
+};
+
 exports.getBoards = getBoards;
 exports.getBoard = getBoard;
 exports.createBoard = createBoard;
+exports.addListToBoard = addListToBoard;

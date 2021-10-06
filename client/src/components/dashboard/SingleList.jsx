@@ -1,10 +1,11 @@
 import React from 'react'
 //import cards from '../../reducers/cards'
 import SingleCard from './SingleCard'
+import { useSelector } from "react-redux";
 
 function SingleList({ list }) {
+  const cards = useSelector(state => state.cards);
 
-  console.log(list)
   return (
     <div className="list-wrapper">
       <div className="list-background">
@@ -22,7 +23,7 @@ function SingleList({ list }) {
             </div>
           </div>
           <div id="cards-container" data-id="list-1-cards">
-            {list.cards.map((c) => <SingleCard key={c._id} card={c} /> )}
+            {cards.map((c) => <SingleCard key={c._id} card={c} /> )}
           </div>
           <div className="add-dropdown add-bottom">
             <div className="card">

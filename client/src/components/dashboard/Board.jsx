@@ -1,13 +1,16 @@
 import React from 'react'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch} from 'react-redux';
 import { useParams } from 'react-router';
 import { fetchBoard } from '../../actions/BoardActions';
 import ExistingLists from './ExistingLists';
 import { useSelector } from 'react-redux';
+import { createList } from '../../actions/ListActions';
 
 
 const Board = () => {
+  const [showListForm, setListShowForm] = useState(false);
+  const [listTitle, setListTitle] = useState("");
   const dispatch = useDispatch()
   const id = useParams().id;
   const board = useSelector((state) => {
@@ -18,6 +21,24 @@ const Board = () => {
   useEffect(() => {
     dispatch(fetchBoard(id))
   }, [id])
+
+  const handleShowListForm = () => {
+    setListShowForm(true);
+  }
+
+  const handleSubmitListForm = () => {
+    const newList = {
+      boardId: id,
+      list: {
+        title: listTitle
+      }
+    };
+
+    dispatch(createList(newList));
+    setListTitle("");
+    setListShowForm(false);
+  }
+
   return (
     <>
        <header>
@@ -36,11 +57,11 @@ const Board = () => {
       <main>
         <div id="list-container" className="list-container">
           <ExistingLists />
-          <div id="new-list" className="new-list">
-            <span>Add a list...</span>
-            <input type="text" placeholder="Add a list..." />
+          <div id="new-list" className={`new-list ${showListForm ? 'selected' : ''}`} >
+            <span onClick={handleShowListForm}>Add a list...</span>
+            <input type="text" placeholder="Add a list..." value={listTitle} onChange={(e) => setListTitle(e.target.value)} />
             <div>
-              <input type="submit" className="button" value="Save" />
+              <input type="submit" className="button" value="Save" onClick={handleSubmitListForm} />
               <i className="x-icon icon"></i>
             </div>
           </div>

@@ -41,7 +41,7 @@ export function createBoard(board, callback) {
       dispatch(createBoardSuccess(data.board));
 
       if (callback) {
-        callback(data.board);
+        callback();
       }
     });
   };
@@ -51,10 +51,9 @@ export function fetchBoard(id, callback) {
   return async function(dispatch) {
     dispatch(fetchBoardRequest(id));
     await apiClient.getBoard(id, data => {
-      console.log(data.board)
       dispatch(fetchBoardSuccess(data.board))
       if (callback) {
-        callback(data.board);
+        callback();
       }
     });
     
