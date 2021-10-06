@@ -8,18 +8,26 @@ const getBoards = (req, res, next) => {
     res.json({
       boards,
     });
-  });
+  })
+  .catch((e) => {
+    next(new HttpError("Couldn't find boards, please try again", 404));
+  })
 };
 
 const getBoard = (req, res, next) => {
-  Board.find({ _id: req.params.id }).then(
+  Board.findOne({ _id: req.params.id }).populate({path: 'lists', populate: {path: 'cards'}}).then(
     //), "title _id createdAt updatedAt").then(
     (board) => {
+      
+      console.log(board) 
       res.json({
         board,
       });
     }
-  );
+  ).catch((e) => {
+    console.log(e)
+    next(new HttpError("Couldn't find that board, please try again", 404));
+  });
 };
 
 const createBoard = (req, res, next) => {
