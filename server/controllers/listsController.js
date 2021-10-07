@@ -32,7 +32,7 @@ const createList = (req, res, next) => {
       boardId: req.body.list.boardId,
       title: req.body.list.list.title,
       position: 65536,
-      cards: []
+      cards: [],
     };
 
     List.create(newList)
@@ -41,8 +41,8 @@ const createList = (req, res, next) => {
         next();
       })
       .catch((err) => {
-        console.log(err)
-        next(new HttpError("Creating list failed, please try again", 500))
+        console.log(err);
+        next(new HttpError("Creating list failed, please try again", 500));
       });
   } else {
     return next(new HttpError("The input field is empty.", 404));
@@ -51,9 +51,32 @@ const createList = (req, res, next) => {
 
 const sendList = (req, res, next) => {
   res.json(req.list);
-}
+};
+
+const updateList = (req, res, next) => {
+  console.log(req.body);
+  const errors = validationResult(req);
+  if (errors.isEmpty()) {
+    const id = req.params.id;
+    List.findByIdAndUpdate(id, {
+      title: req.body.list.title,
+      position: req.body.list.position,
+    })
+      .then((list) => {
+        req.list = list;
+        next();
+      })
+      .catch((err) => {
+        console.log(err);
+        next(new HttpError("List not found", 404));
+      });
+  } else {
+    return next(new HttpError("You must provide a title.", 422));
+  }
+};
 
 // exports.getLists = getLists;
 // exports.getList = getList;
 exports.createList = createList;
 exports.sendList = sendList;
+exports.updateList = updateList;
