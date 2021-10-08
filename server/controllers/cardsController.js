@@ -25,7 +25,7 @@ const getCard = (req, res, next) => {
 const getCardBoard = (req, res, next) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
-    console.log(req.body.listId);
+    console.log("=======", req.body, "======");
     List.findOne({ _id: req.body.listId })
       .then((list) => {
         req.boardId = list.boardId;

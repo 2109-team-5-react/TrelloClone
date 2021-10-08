@@ -58,7 +58,7 @@ const apiClient = {
   },
   addCard: function (card, callback) {
     return axios
-      .post(routes.CREATE_CARD_URL, { card })
+      .post(routes.CREATE_CARD_URL, card)
       .then(unwrapData)
       .then(callback)
       .catch(logError);

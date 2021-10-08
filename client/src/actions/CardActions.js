@@ -7,7 +7,7 @@ export function createCardSuccess(card) {
 
 export function createCard(card, callback) {
   return function (dispatch) {
-    apiClient.createCard(card, (data) => {
+    apiClient.addCard(card, (data) => {
       dispatch(createCardSuccess(data));
 
       if (callback) {

@@ -32,10 +32,8 @@ function SingleList({ list, activeList, setActiveList }) {
           </div>
           <AddCardForm
             listId={list._id}
-            // showNewCardForm={showNewCardForm}
             activeList={activeList}
             setActiveList={setActiveList}
-            // setShowNewCardForm={setShowNewCardForm}
           />
         </div>
       </div>
