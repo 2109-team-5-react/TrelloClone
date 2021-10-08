@@ -18,6 +18,8 @@ const AddCardForm = ({ listId, activeList, setActiveList }) => {
   };
 
   const handleSubmitCard = () => {
+    if (cardTitle === "") return;
+
     const newCard = {
       listId,
       card: {

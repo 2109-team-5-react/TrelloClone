@@ -7,6 +7,7 @@ const {
   validateBoard,
   validateList,
   validateUpdateList,
+  validateCard,
 } = require("../validators/validators");
 
 router.get("/boards", boardsController.getBoards);
@@ -15,6 +16,7 @@ router.get("/cards/:id", cardsController.getCard, cardsController.sendCard);
 
 router.post(
   "/cards",
+  validateCard,
   cardsController.getCardBoard,
   cardsController.createCard,
   cardsController.sendCard
