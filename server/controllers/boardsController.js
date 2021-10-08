@@ -3,31 +3,34 @@ const HttpError = require("../models/httpError");
 const { validationResult } = require("express-validator");
 
 const getBoards = (req, res, next) => {
-  Board.find({}).then((boards) => {
-    //, "title _id createdAt updatedAt").then((boards) => {
-    res.json({
-      boards,
+  Board.find({})
+    .then((boards) => {
+      //, "title _id createdAt updatedAt").then((boards) => {
+      res.json({
+        boards,
+      });
+    })
+    .catch((e) => {
+      next(new HttpError("Couldn't find boards, please try again", 404));
     });
-  })
-  .catch((e) => {
-    next(new HttpError("Couldn't find boards, please try again", 404));
-  })
 };
 
 const getBoard = (req, res, next) => {
-  Board.findOne({ _id: req.params.id }).populate({path: 'lists', populate: {path: 'cards'}}).then(
-    //), "title _id createdAt updatedAt").then(
-    (board) => {
-      
-      console.log(board) 
-      res.json({
-        board,
-      });
-    }
-  ).catch((e) => {
-    console.log(e)
-    next(new HttpError("Couldn't find that board, please try again", 404));
-  });
+  Board.findOne({ _id: req.params.id })
+    .populate({ path: "lists", populate: { path: "cards" } })
+    .then(
+      //), "title _id createdAt updatedAt").then(
+      (board) => {
+        console.log(board);
+        res.json({
+          board,
+        });
+      }
+    )
+    .catch((e) => {
+      console.log(e);
+      next(new HttpError("Couldn't find that board, please try again", 404));
+    });
 };
 
 const createBoard = (req, res, next) => {

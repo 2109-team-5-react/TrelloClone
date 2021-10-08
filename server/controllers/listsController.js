@@ -3,28 +3,6 @@ const Board = require("../models/Board");
 const HttpError = require("../models/httpError");
 const { validationResult } = require("express-validator");
 
-// const getLists = (req, res, next) => {
-//   List.find({}).then((lists) => {
-//     //, "title _id createdAt updatedAt").then((boards) => {
-//     res.json({
-//       lists,
-//     });
-//   });
-// };
-
-// const getList = (req, res, next) => {
-//   List.find({ _id: req.params.id }).then(
-//     //), "title _id createdAt updatedAt").then(
-//     (list) => {
-//       res.json({
-//         list,
-//       });
-//     }
-//   );
-// };
-
-// Bin.findOneAndUpdate({ binId: binId },  {$push: { requests: { request: reqObj } }}, { new: true } )
-
 const createList = (req, res, next) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
