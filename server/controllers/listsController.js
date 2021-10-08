@@ -27,6 +27,18 @@ const createList = (req, res, next) => {
   }
 };
 
+const addCardToList = (req, res, next) => {
+  const card = req.card;
+  const listId = req.card.listId;
+  console.log(req);
+
+  List.findByIdAndUpdate(listId, {
+    $addToSet: { cards: card._id }, // adds list to the lists array in board
+  }).then(() => {
+    next();
+  });
+};
+
 const sendList = (req, res, next) => {
   res.json(req.list);
 };
@@ -58,3 +70,4 @@ const updateList = (req, res, next) => {
 exports.createList = createList;
 exports.sendList = sendList;
 exports.updateList = updateList;
+exports.addCardToList = addCardToList;
