@@ -1,16 +1,11 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
-
-function SingleCard({card, setShowModal, setModalCard }) {
-
-  const handleShowCard = () => {
-    setShowModal(true)
-    setModalCard(card)
-  }
+function SingleCard({card}) {
 
   return (
-    <>
-      <div className="card-background" onClick={handleShowCard}>
+    <Link to={`/cards/${card._id}`}>
+      <div className="card-background" >
         <div className="card ">
           <i className="edit-toggle edit-icon sm-icon"></i>
           <div className="card-info">
@@ -33,7 +28,7 @@ function SingleCard({card, setShowModal, setModalCard }) {
           </div>
         </div>
       </div>
-    </>
+    </Link>
   )
 }
 

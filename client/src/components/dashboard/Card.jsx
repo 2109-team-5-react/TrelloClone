@@ -1,19 +1,44 @@
-import React from "react";
-const Card = ({card}) => {
-  console.log(card)
+import React, {useState} from "react";
+import {useSelector, useDispatch} from "react-redux";
+import Comment from './Comment'
+import { useParams } from "react-router";
+import {updateCard} from "../../actions/CardActions"
+const Card = () => {
+  const id = useParams().id
+  const card = useSelector((s) => s.cards.filter(c => c._id === id)[0])
+  const [cardTitle, setCardTitle] = useState(card.title)
+  const list = useSelector((state) => {
+    return state.lists.filter((l) => card.listId === l._id)[0]
+  })
+  
+  const dispatch = useDispatch()
+  const handleInputBlur = (e) => {
+    if (e.key !== "Enter") {
+      return
+    }
+    e.currentTarget.blur()
+  }
+
+  const handleUpdateTitle = () => {
+    let card = {
+      "card": {
+        "title": cardTitle
+      }
+    }
+    dispatch(updateCard(id, card))
+  }
   return (
-    <>
+    <div id="modal-container">
       <div className="screen"></div>
       <div id="modal">
         <i className="x-icon icon close-modal"></i>
         <header>
           <i className="card-icon icon .close-modal"></i>
-          <textarea className="list-title" style={{ height: "45px" }}>
-            Cards do many cool things. Click on this card to open it and learn
-            more...
+          <textarea className="list-title" style={{ height: "45px" }} onChange={(e) => setCardTitle(e.target.value)} onKeyUp={handleInputBlur} onBlur={handleUpdateTitle}>
+            {cardTitle}
           </textarea>
           <p>
-            in list <a className="link">Stuff to try (this is a list)</a>
+            in list <a className="link">{list.title}</a>
             <i className="sub-icon sm-icon"></i>
           </p>
         </header>
@@ -54,7 +79,7 @@ const Card = ({card}) => {
                       className="checkbox"
                       checked=""
                     />
-                    Aug 4 at 10:42 AM <span>(past due)</span>
+                    {card.dueDate || "08-11-1993"}<span>(past due)</span>
                   </div>
                 </li>
               </ul>
@@ -64,7 +89,7 @@ const Card = ({card}) => {
                   Edit
                 </span>
                 <p className="textarea-overlay">
-                  Cards have a symbol to indicate if they contain a description.
+                  {card.description}
                 </p>
                 <p id="description-edit-options" className="hidden">
                   You have unsaved edits on this field.{" "}
@@ -109,40 +134,7 @@ const Card = ({card}) => {
                 <li className="not-implemented">Show Details</li>
               </ul>
               <ul className="modal-activity-list">
-                <li>
-                  <div className="member-container">
-                    <div className="card-member">TP</div>
-                  </div>
-                  <h3>Taylor Peat</h3>
-                  <div className="comment static-comment">
-                    <span>The activities are not functional.</span>
-                  </div>
-                  <small>
-                    22 minutes ago - <span className="link">Edit</span> -{" "}
-                    <span className="link">Delete</span>
-                  </small>
-                  <div className="comment">
-                    <label>
-                      <textarea required="" rows="1">
-                        The activities have not been implemented yet.
-                      </textarea>
-                      <div>
-                        <a className="light-button card-icon sm-icon"></a>
-                        <a className="light-button smiley-icon sm-icon"></a>
-                        <a className="light-button email-icon sm-icon"></a>
-                      </div>
-                      <div>
-                        <p>You haven&apos;t typed anything!</p>
-                        <input
-                          type="submit"
-                          className="button not-implemented"
-                          value="Save"
-                        />
-                        <i className="x-icon icon"></i>
-                      </div>
-                    </label>
-                  </div>
-                </li>
+                <Comment />
                 <li>
                   <div className="member-container">
                     <div className="card-member small-size">VR</div>
@@ -231,7 +223,7 @@ const Card = ({card}) => {
           </ul>
         </aside>
       </div>
-    </>
+    </div>
   );
 };
 

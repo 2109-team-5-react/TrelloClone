@@ -73,12 +73,10 @@ const updateCard = (req, res, next) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
     const id = req.params.id;
-    Card.findByIdAndUpdate(id, {
-      // title: req.body.list.title,
-      // position: req.body.list.position,
-    })
-      .then((list) => {
-        req.list = list;
+    Card.findByIdAndUpdate(id, req.body.card, {new: true})
+      .then((card) => {
+        console.log(card)
+        req.card = card;
         next();
       })
       .catch((err) => {
@@ -86,9 +84,20 @@ const updateCard = (req, res, next) => {
         next(new HttpError("Card not found", 404));
       });
   } else {
-    return next(new HttpError("You must provide a title.", 422));
+    return next(new HttpError("You must provide at least one valid card attribute to be updated.", 422));
   }
 };
+
+const addCommentToCard = (req, res, next) => {
+  const comment = req.comment;
+  const cardId = req.body.cardId;
+
+  Card.findByIdAndUpdate(cardId, {
+    $addToSet: { comments: comment._id }, // adds list to the lists array in board
+  }).then(() => {
+    next();
+  });
+}
 
 exports.getCard = getCard;
 // exports.getLists = getLists;
@@ -97,3 +106,4 @@ exports.getCardBoard = getCardBoard;
 exports.createCard = createCard;
 exports.sendCard = sendCard;
 exports.updateCard = updateCard;
+exports.addCommentToCard = addCommentToCard;

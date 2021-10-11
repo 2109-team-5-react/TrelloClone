@@ -6,7 +6,6 @@ import ListTitle from "./ListTitle";
 
 function SingleList({ list, activeList, setActiveList, setShowModal, setModalCard }) {
   const cards = useSelector((state) => state.cards);
-  console.log(cards)
 
   return (
     <div

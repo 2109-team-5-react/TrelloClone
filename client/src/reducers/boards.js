@@ -1,7 +1,9 @@
 export default function boards(state = [], action) {
   switch (action.type) {
     case "BOARD_FETCHED": {
-      return [action.board];
+      const board = { ...action.board };
+      delete board.lists
+      return [board];
     }
     case "FETCH_BOARDS_SUCCESS": {
       const boards = action.boards.map((b) => {

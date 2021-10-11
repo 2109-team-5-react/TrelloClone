@@ -1,14 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import BoardTile from "./BoardTile";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../actions/BoardActions";
 import CreateBoardTile from "./CreateBoardTile";
+// import {useRouteMatch} from "react-router-dom";
 
 const BoardsDashboard = (props) => {
   const boards = useSelector((state) => state.boards);
-
+  const [activeBoardId, setActiveBoardId] = useState(null)
+  console.log(activeBoardId)
   const boardTiles = boards.map((board) => {
-    return <BoardTile key={board._id} title={board.title} id={board._id} />;
+    return <BoardTile key={board._id} title={board.title} id={board._id} setActiveBoardId={setActiveBoardId} />;
   });
 
   const dispatch = useDispatch();

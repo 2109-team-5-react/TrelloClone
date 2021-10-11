@@ -6,24 +6,31 @@ import { fetchBoard } from "../../actions/BoardActions";
 import ExistingLists from "./ExistingLists";
 import { useSelector } from "react-redux";
 import { createList } from "../../actions/ListActions";
-import Card from "./Card"
+// import { useRouteMatch } from "react-router-dom";
+// import Card from "./Card"
 
 const Board = () => {
   const [showListForm, setListShowForm] = useState(false);
   const [listTitle, setListTitle] = useState("");
-  const [showModal, setShowModal] = useState(false)
-  const [modalCard, setModalCard] = useState(null)
-
+  console.log("are you here")
+  let id = useParams().id
   const dispatch = useDispatch();
-  const id = useParams().id;
   const board = useSelector((state) => {
+    console.log(state.lists)
     return state.boards.filter((b) => {
       return id === b._id.toString();
     })[0];
   });
+  const cards = useSelector(s => s.cards)
 
   useEffect(() => {
-    dispatch(fetchBoard(id));
+    let resource = window.location.pathname.split('/')[1]
+    if (resource !== 'boards') {
+      const card = cards.filter(c => c._id === id)[0]
+      id = card.boardId
+      console.log(id)
+    }
+    dispatch(fetchBoard(id))
   }, [dispatch, id]);
 
   const handleShowListForm = () => {
@@ -67,7 +74,7 @@ const Board = () => {
         </header>
         <main>
           <div id="list-container" className="list-container">
-            <ExistingLists setShowModal={setShowModal} setModalCard={setModalCard} />
+            <ExistingLists />
             <div
               id="new-list"
               className={`new-list ${showListForm ? "selected" : ""}`}
@@ -184,7 +191,7 @@ const Board = () => {
             </div>
           </div>
         </div>
-        <div id="modal-container">{showModal && <Card card={modalCard} />}</div>
+        <div id="modal-container"></div>
         <div id="dropdown-container"></div>
       </>
     );
