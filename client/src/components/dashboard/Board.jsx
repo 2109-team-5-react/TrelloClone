@@ -6,10 +6,14 @@ import { fetchBoard } from "../../actions/BoardActions";
 import ExistingLists from "./ExistingLists";
 import { useSelector } from "react-redux";
 import { createList } from "../../actions/ListActions";
+import Card from "./Card"
 
 const Board = () => {
   const [showListForm, setListShowForm] = useState(false);
   const [listTitle, setListTitle] = useState("");
+  const [showModal, setShowModal] = useState(false)
+  const [modalCard, setModalCard] = useState(null)
+
   const dispatch = useDispatch();
   const id = useParams().id;
   const board = useSelector((state) => {
@@ -63,7 +67,7 @@ const Board = () => {
         </header>
         <main>
           <div id="list-container" className="list-container">
-            <ExistingLists />
+            <ExistingLists setShowModal={setShowModal} setModalCard={setModalCard} />
             <div
               id="new-list"
               className={`new-list ${showListForm ? "selected" : ""}`}
@@ -180,7 +184,7 @@ const Board = () => {
             </div>
           </div>
         </div>
-        <div id="modal-container"></div>
+        <div id="modal-container">{showModal && <Card card={modalCard} />}</div>
         <div id="dropdown-container"></div>
       </>
     );

@@ -11,7 +11,7 @@ const CardSchema = new Schema(
       type: Date,
       default: null,
     },
-    description: String,
+    description: { type: String, default: "" },
     listId: { type: Schema.Types.ObjectId, ref: "List" },
     boardId: { type: Schema.Types.ObjectId, ref: "Board" },
     position: { type: Number, default: 65535 },
