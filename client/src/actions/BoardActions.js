@@ -14,11 +14,8 @@ export function fetchBoardRequest(id) {
 }
 
 export function fetchBoardSuccess(board) {
-  console.log(board, "test")
   return { type: types.BOARD_FETCHED, board }
 } 
-
-
 
 export function createBoardRequest() {
   return { type: types.CREATE_BOARD_REQUEST };
@@ -52,7 +49,6 @@ export function fetchBoard(id, callback) {
   return async function(dispatch) {
     dispatch(fetchBoardRequest(id));
     await apiClient.getBoard(id, data => {
-      // console.log(data)
       dispatch(fetchBoardSuccess(data.board))
       if (callback) {
         callback();

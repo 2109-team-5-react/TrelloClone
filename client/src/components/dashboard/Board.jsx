@@ -6,31 +6,36 @@ import { fetchBoard } from "../../actions/BoardActions";
 import ExistingLists from "./ExistingLists";
 import { useSelector } from "react-redux";
 import { createList } from "../../actions/ListActions";
-// import { useRouteMatch } from "react-router-dom";
-// import Card from "./Card"
 
 const Board = () => {
+  const [board, setBoard] = useState(null)
   const [showListForm, setListShowForm] = useState(false);
   const [listTitle, setListTitle] = useState("");
-  console.log("are you here")
+  const boards = useSelector((state) => state.boards);
+
   let id = useParams().id
   const dispatch = useDispatch();
-  const board = useSelector((state) => {
-    console.log(state.lists)
-    return state.boards.filter((b) => {
-      return id === b._id.toString();
-    })[0];
-  });
+  console.log("ID", id);
+  console.log("BOARD", board);
+
+  // const board = useSelector((state) => {
+  //   return state.boards.filter((b) => {
+  //     return id === b._id.toString();
+  //   })[0];
+  // });
+
   const cards = useSelector(s => s.cards)
 
   useEffect(() => {
+    // board is undefined when refresh - lose board-state because id doesn't change, therefore useEffect doesn't trigger after the first time. 
     let resource = window.location.pathname.split('/')[1]
     if (resource !== 'boards') {
       const card = cards.filter(c => c._id === id)[0]
-      id = card.boardId
-      console.log(id)
+      id = card.boardId;
     }
-    dispatch(fetchBoard(id))
+
+    dispatch(fetchBoard(id));
+    setBoard(boards[0]);
   }, [dispatch, id]);
 
   const handleShowListForm = () => {

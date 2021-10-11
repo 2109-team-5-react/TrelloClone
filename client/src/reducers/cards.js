@@ -3,7 +3,6 @@ export default function cards(state = [], action) {
     // Changes cards to all cards for specific board
     case "BOARD_FETCHED": {
       let cards = [];
-      console.log(action.board, "hehe")
       for (let i = 0; i < action.board.lists.length; i++) {
         for (let j = 0; j < action.board.lists[i].cards.length; j++) {
           cards.push(action.board.lists[i].cards[j]);

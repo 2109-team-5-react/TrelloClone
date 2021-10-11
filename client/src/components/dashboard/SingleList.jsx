@@ -4,7 +4,7 @@ import AddCardForm from "./AddCardForm";
 import { useSelector } from "react-redux";
 import ListTitle from "./ListTitle";
 
-function SingleList({ list, activeList, setActiveList, setShowModal, setModalCard }) {
+function SingleList({ list, activeList, setActiveList }) {
   const cards = useSelector((state) => state.cards);
 
   return (
@@ -27,7 +27,7 @@ function SingleList({ list, activeList, setActiveList, setShowModal, setModalCar
           </div>
           <div id="cards-container" data-id="list-1-cards">
             {cards.filter(c => c.listId === list._id).map((c) => (
-              <SingleCard key={c._id} card={c} setShowModal={setShowModal} setModalCard={setModalCard} />
+              <SingleCard key={c._id} card={c} />
             ))}
           </div>
           <AddCardForm
