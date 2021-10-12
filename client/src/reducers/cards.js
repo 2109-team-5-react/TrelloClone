@@ -24,7 +24,6 @@ export default function cards(state = [], action) {
       let cards = state.filter(card => {
         return card._id !== action.card._id
       })
-
       return cards.concat(action.card)
     }
     default:

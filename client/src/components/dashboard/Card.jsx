@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {useSelector, useDispatch} from "react-redux";
 import Comment from './Comment'
 import { useParams } from "react-router";
-import {updateCard, fetchCard} from "../../actions/CardActions"
+import { fetchCard} from "../../actions/CardActions"
+import CardEditingTitle from "./CardEditingTitle";
+import DescriptionForm from "./DescriptionForm";
+
 const Card = () => {
   const id = useParams().id
-  const card = useSelector((s) => s.cards.filter(c => c._id === id)[0])
-  const [cardTitle, setCardTitle] = useState("")
+  const card = useSelector((s) => s.cards.filter(c => c._id === id)[0]);
   const list = useSelector((state) => {
     if (!card) return
     return state.lists.filter((l) => card.listId === l._id)[0]
@@ -16,29 +18,13 @@ const Card = () => {
   useEffect(() => {
     dispatch(fetchCard(id))
   }, [id, dispatch])
-  
-  const handleInputBlur = (e) => {
-    if (e.key !== "Enter") {
-      return
-    }
-    e.currentTarget.blur()
-  }
-
-  const handleUpdateTitle = () => {
-    let card = {
-      "card": {
-        "title": cardTitle
-      }
-    }
-    dispatch(updateCard(id, card))
-  }
 
   const handleCloseModal = () => {
     let boardId = card.boardId
     window.location = `/boards/${boardId}`
   }
 
-  if (!card || !list) return <div></div>
+  if (!card || !list) return null;
   return (
     <div id="modal-container">
       <div className="screen"></div>
@@ -46,9 +32,7 @@ const Card = () => {
         <i className="x-icon icon close-modal" onClick={handleCloseModal}></i>
         <header>
           <i className="card-icon icon .close-modal"></i>
-          <textarea className="list-title" style={{ height: "45px" }} onChange={(e) => setCardTitle(e.target.value)} onKeyUp={handleInputBlur} onBlur={handleUpdateTitle}>
-            {cardTitle}
-          </textarea>
+          <CardEditingTitle card={card} id={id} />
           <p>
             in list <a className="link">{list.title}</a>
             <i className="sub-icon sm-icon"></i>
@@ -95,20 +79,7 @@ const Card = () => {
                   </div>
                 </li>
               </ul>
-              <form className="description">
-                <p>Description</p>
-                <span id="description-edit" className="link">
-                  Edit
-                </span>
-                <p className="textarea-overlay">
-                  {card.description}
-                </p>
-                <p id="description-edit-options" className="hidden">
-                  You have unsaved edits on this field.{" "}
-                  <span className="link">View edits</span> -{" "}
-                  <span className="link">Discard</span>
-                </p>
-              </form>
+              <DescriptionForm card={card} id={id} />
             </li>
             <li className="comment-section">
               <h2 className="comment-icon icon">Add Comment</h2>
