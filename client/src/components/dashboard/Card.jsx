@@ -1,17 +1,22 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import {useSelector, useDispatch} from "react-redux";
 import Comment from './Comment'
 import { useParams } from "react-router";
-import {updateCard} from "../../actions/CardActions"
+import {updateCard, fetchCard} from "../../actions/CardActions"
 const Card = () => {
   const id = useParams().id
   const card = useSelector((s) => s.cards.filter(c => c._id === id)[0])
-  const [cardTitle, setCardTitle] = useState(card.title)
+  const [cardTitle, setCardTitle] = useState("")
   const list = useSelector((state) => {
+    if (!card) return
     return state.lists.filter((l) => card.listId === l._id)[0]
   })
-  
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchCard(id))
+  }, [id, dispatch])
+  
   const handleInputBlur = (e) => {
     if (e.key !== "Enter") {
       return
@@ -27,11 +32,18 @@ const Card = () => {
     }
     dispatch(updateCard(id, card))
   }
+
+  const handleCloseModal = () => {
+    let boardId = card.boardId
+    window.location = `/boards/${boardId}`
+  }
+
+  if (!card || !list) return <div></div>
   return (
     <div id="modal-container">
       <div className="screen"></div>
       <div id="modal">
-        <i className="x-icon icon close-modal"></i>
+        <i className="x-icon icon close-modal" onClick={handleCloseModal}></i>
         <header>
           <i className="card-icon icon .close-modal"></i>
           <textarea className="list-title" style={{ height: "45px" }} onChange={(e) => setCardTitle(e.target.value)} onKeyUp={handleInputBlur} onBlur={handleUpdateTitle}>

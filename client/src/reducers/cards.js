@@ -20,6 +20,13 @@ export default function cards(state = [], action) {
         }
       })
     }
+    case "FETCH_CARD_SUCCESS": {
+      let cards = state.filter(card => {
+        return card._id !== action.card._id
+      })
+
+      return cards.concat(action.card)
+    }
     default:
       return state;
   }
