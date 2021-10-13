@@ -16,7 +16,7 @@ const CardSchema = new Schema(
     boardId: { type: Schema.Types.ObjectId, ref: "Board" },
     position: { type: Number, default: 65535 },
     archived: { type: Boolean, default: false },
-    comments: { type: Schema.Types.ObjectId, ref: "Comment" },
+    comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
     actions: [{ type: String }],
     labels: [String],
     completed: { type: Boolean, default: false },
