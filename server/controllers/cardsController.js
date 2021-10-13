@@ -9,8 +9,10 @@ const getCard = (req, res, next) => {
   if (errors.isEmpty()) {
     const id = req.params.id;
     Card.findById(id)
+      .populate("comments")
       .then((card) => {
         req.card = card;
+        console.log("Ultimate card:", card);
         next();
       })
       .catch((err) => {
@@ -94,9 +96,14 @@ const addCommentToCard = (req, res, next) => {
   const comment = req.comment;
   const cardId = req.body.cardId;
 
-  Card.findByIdAndUpdate(cardId, {
-    $addToSet: { comments: comment._id }, // adds list to the lists array in board
-  }).then(() => {
+  Card.findByIdAndUpdate(
+    cardId,
+    {
+      $addToSet: { comments: comment._id }, // adds list to the lists array in board
+    },
+    { new: true }
+  ).then((card) => {
+    console.log("controller", card);
     next();
   });
 };

@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createComment } from "../../actions/CommentActions";
 
 const CommentForm = ({ card }) => {
   const [commentText, setCommentText] = useState("");
   const dispatch = useDispatch();
-  useSelector((state) => console.log(state.comments));
 
   const handleSaveComment = () => {
     const comment = {
@@ -15,6 +14,7 @@ const CommentForm = ({ card }) => {
       },
     };
     dispatch(createComment(comment));
+    setCommentText("");
   };
   return (
     <li className="comment-section">

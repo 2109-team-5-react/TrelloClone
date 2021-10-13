@@ -1,11 +1,12 @@
 const List = require("../models/List");
 const Board = require("../models/Board");
-const Comment = require('../models/Comment');
+const Comment = require("../models/Comment");
 const Card = require("../models/Card");
 const HttpError = require("../models/httpError");
 const { validationResult } = require("express-validator");
 
 const createComment = (req, res, next) => {
+  console.log("creating comment");
   const errors = validationResult(req);
   if (errors.isEmpty()) {
     const newComment = {
@@ -16,6 +17,7 @@ const createComment = (req, res, next) => {
     Comment.create(newComment)
       .then((comment) => {
         req.comment = comment;
+        console.log(comment);
         next();
       })
       .catch((err) => {
@@ -31,11 +33,5 @@ const sendComment = (req, res, next) => {
   res.json(req.comment);
 };
 
-
-
-
-
-
 exports.createComment = createComment;
 exports.sendComment = sendComment;
-

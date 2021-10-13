@@ -1,14 +1,15 @@
 import React from "react";
 
-const Comment = () => {
+const Comment = ({ comment }) => {
+  console.log(comment);
   return (
     <li>
       <div className="member-container">
         <div className="card-member">TP</div>
       </div>
-      <h3>Taylor Peat</h3>
+      <h3>Srdjan</h3>
       <div className="comment static-comment">
-        <span>The activities are not functional.</span>
+        <span>{comment.text}</span>
       </div>
       <small>
         22 minutes ago - <span className="link">Edit</span> -{" "}

@@ -21,7 +21,6 @@ const getBoard = (req, res, next) => {
     .then(
       //), "title _id createdAt updatedAt").then(
       (board) => {
-        console.log(board);
         res.json({
           board,
         });

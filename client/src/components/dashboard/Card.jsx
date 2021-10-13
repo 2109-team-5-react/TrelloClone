@@ -15,8 +15,10 @@ const Card = () => {
     if (!card) return;
     return state.lists.filter((l) => card.listId === l._id)[0];
   });
+  const comments = useSelector((s) => s.comments);
   const dispatch = useDispatch();
   const [archiveClicked, setArchiveClicked] = useState(false);
+  console.log(comments);
 
   useEffect(() => {
     dispatch(fetchCard(id));
@@ -140,8 +142,10 @@ const Card = () => {
                 <li className="not-implemented">Show Details</li>
               </ul>
               <ul className="modal-activity-list">
-                <Comment />
-                <li>
+                {comments.reverse().map((comment) => (
+                  <Comment comment={comment} key={comment._id} />
+                ))}
+                {/* <li>
                   <div className="member-container">
                     <div className="card-member small-size">VR</div>
                   </div>
@@ -184,7 +188,7 @@ const Card = () => {
                       </div>
                     </label>
                   </div>
-                </li>
+                </li> */}
               </ul>
             </li>
           </ul>
