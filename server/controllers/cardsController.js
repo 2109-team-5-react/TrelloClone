@@ -29,7 +29,6 @@ const getCardBoard = (req, res, next) => {
     List.findOne({ _id: req.body.listId })
       .then((list) => {
         req.boardId = list.boardId;
-        console.log(req);
         next();
       })
       .catch((err) => {
@@ -69,13 +68,11 @@ const sendCard = (req, res, next) => {
 };
 
 const updateCard = (req, res, next) => {
-  console.log(req.body);
   const errors = validationResult(req);
   if (errors.isEmpty()) {
     const id = req.params.id;
-    Card.findByIdAndUpdate(id, req.body.card, {new: true})
+    Card.findByIdAndUpdate(id, req.body.card, { new: true })
       .then((card) => {
-        console.log(card)
         req.card = card;
         next();
       })
@@ -84,7 +81,12 @@ const updateCard = (req, res, next) => {
         next(new HttpError("Card not found", 404));
       });
   } else {
-    return next(new HttpError("You must provide at least one valid card attribute to be updated.", 422));
+    return next(
+      new HttpError(
+        "You must provide at least one valid card attribute to be updated.",
+        422
+      )
+    );
   }
 };
 
@@ -97,7 +99,7 @@ const addCommentToCard = (req, res, next) => {
   }).then(() => {
     next();
   });
-}
+};
 
 exports.getCard = getCard;
 // exports.getLists = getLists;

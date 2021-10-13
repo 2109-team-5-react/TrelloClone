@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 
 const Comment = () => {
   return (
@@ -36,7 +36,7 @@ const Comment = () => {
         </label>
       </div>
     </li>
-  )
-}
+  );
+};
 
-export default Comment
+export default Comment;

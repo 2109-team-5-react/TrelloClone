@@ -5,7 +5,10 @@ export default function cards(state = [], action) {
       let cards = [];
       for (let i = 0; i < action.board.lists.length; i++) {
         for (let j = 0; j < action.board.lists[i].cards.length; j++) {
-          cards.push(action.board.lists[i].cards[j]);
+          let card = action.board.lists[i].cards[j];
+          if (!card.archived) {
+            cards.push(card);
+          }
         }
       }
       return cards;
@@ -14,17 +17,19 @@ export default function cards(state = [], action) {
       return state.concat(action.card);
     }
     case "UPDATE_CARD_SUCCESS": {
-      return state.map((c) => {
-        if (action.card._id === c._id) {
-          return action.card
-        }
-      })
+      return state
+        .map((c) => {
+          if (action.card._id === c._id) {
+            return action.card;
+          }
+        })
+        .filter((card) => !card.archived);
     }
     case "FETCH_CARD_SUCCESS": {
-      let cards = state.filter(card => {
-        return card._id !== action.card._id
-      })
-      return cards.concat(action.card)
+      let cards = state.filter((card) => {
+        return card._id !== action.card._id;
+      });
+      return cards.concat(action.card);
     }
     default:
       return state;

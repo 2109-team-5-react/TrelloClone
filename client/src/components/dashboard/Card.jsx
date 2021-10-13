@@ -1,28 +1,48 @@
-import React, { useEffect } from "react";
-import {useSelector, useDispatch} from "react-redux";
-import Comment from './Comment'
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import Comment from "./Comment";
 import { useParams } from "react-router";
-import { fetchCard} from "../../actions/CardActions"
+import { fetchCard, updateCard } from "../../actions/CardActions";
 import CardEditingTitle from "./CardEditingTitle";
 import DescriptionForm from "./DescriptionForm";
+import CommentForm from "./CommentForm";
+import ArchiveHeader from "./ArchiveHeader";
 
 const Card = () => {
-  const id = useParams().id
-  const card = useSelector((s) => s.cards.filter(c => c._id === id)[0]);
+  const id = useParams().id;
+  const card = useSelector((s) => s.cards.filter((c) => c._id === id)[0]);
   const list = useSelector((state) => {
-    if (!card) return
-    return state.lists.filter((l) => card.listId === l._id)[0]
-  })
-  const dispatch = useDispatch()
+    if (!card) return;
+    return state.lists.filter((l) => card.listId === l._id)[0];
+  });
+  const dispatch = useDispatch();
+  const [archiveClicked, setArchiveClicked] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchCard(id))
-  }, [id, dispatch])
+    dispatch(fetchCard(id));
+  }, [id, dispatch]);
+
+  const toggleArchive = () => {
+    setArchiveClicked(!archiveClicked);
+  };
 
   const handleCloseModal = () => {
-    let boardId = card.boardId
-    window.location = `/boards/${boardId}`
-  }
+    if (archiveClicked) handleUltimateArchive();
+    let boardId = card.boardId;
+    window.location = `/boards/${boardId}`;
+  };
+
+  const handleUltimateArchive = () => {
+    toggleArchive();
+    const archivedCard = {
+      card: {
+        archived: true,
+      },
+    };
+    dispatch(updateCard(id, archivedCard));
+    let boardId = card.boardId;
+    window.location = `/boards/${boardId}`;
+  };
 
   if (!card || !list) return null;
   return (
@@ -30,6 +50,7 @@ const Card = () => {
       <div className="screen"></div>
       <div id="modal">
         <i className="x-icon icon close-modal" onClick={handleCloseModal}></i>
+        {archiveClicked ? <ArchiveHeader /> : null}
         <header>
           <i className="card-icon icon .close-modal"></i>
           <CardEditingTitle card={card} id={id} />
@@ -75,13 +96,15 @@ const Card = () => {
                       className="checkbox"
                       checked=""
                     />
-                    {card.dueDate || "08-11-1993"}<span>(past due)</span>
+                    {card.dueDate || "08-11-1993"}
+                    <span>(past due)</span>
                   </div>
                 </li>
               </ul>
               <DescriptionForm card={card} id={id} />
             </li>
-            <li className="comment-section">
+            <CommentForm card={card} />
+            {/* <li className="comment-section">
               <h2 className="comment-icon icon">Add Comment</h2>
               <div>
                 <div className="member-container">
@@ -110,7 +133,7 @@ const Card = () => {
                   </label>
                 </div>
               </div>
-            </li>
+            </li> */}
             <li className="activity-section">
               <h2 className="activity-icon icon">Activity</h2>
               <ul className="horiz-list">
@@ -123,8 +146,9 @@ const Card = () => {
                     <div className="card-member small-size">VR</div>
                   </div>
                   <p>
-                    <span className="member-name">Victor Reyes</span> changed the
-                    background of this board <small>yesterday at 4:53 PM</small>
+                    <span className="member-name">Victor Reyes</span> changed
+                    the background of this board{" "}
+                    <small>yesterday at 4:53 PM</small>
                   </p>
                 </li>
                 <li className="activity-comment">
@@ -197,9 +221,20 @@ const Card = () => {
               <i className="check-icon sm-icon"></i>
             </li>
             <hr />
-            <li className="archive-button">
-              <i className="file-icon sm-icon "></i>Archive
-            </li>
+            {archiveClicked ? (
+              <>
+                <li className="unarchive-button" onClick={toggleArchive}>
+                  <i className="send-icon sm-icon"></i>Send to board
+                </li>
+                <li className="red-button" onClick={handleUltimateArchive}>
+                  <i className="minus-icon sm-icon"></i>Delete
+                </li>
+              </>
+            ) : (
+              <li className="archive-button" onClick={toggleArchive}>
+                <i className="file-icon sm-icon "></i>Archive
+              </li>
+            )}
           </ul>
           <ul className="light-list">
             <li className="not-implemented">Share and more...</li>

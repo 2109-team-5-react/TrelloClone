@@ -63,20 +63,27 @@ const apiClient = {
       .then(callback)
       .catch(logError);
   },
-  updateCard: function(id, card, callback) {
+  updateCard: function (id, card, callback) {
     return axios
-    .put(`${routes.UPDATE_CARD_URL}/${id}`, card)
-    .then(unwrapData)
-    .then(callback)
-    .catch(logError)
+      .put(`${routes.UPDATE_CARD_URL}/${id}`, card)
+      .then(unwrapData)
+      .then(callback)
+      .catch(logError);
   },
-  getCard: function(id, callback) {
+  getCard: function (id, callback) {
     return axios
-    .put(`${routes.SINGLE_CARD_URL}/${id}`)
-    .then(unwrapData)
-    .then(callback)
-    .catch(logError)
-  }
+      .put(`${routes.SINGLE_CARD_URL}/${id}`)
+      .then(unwrapData)
+      .then(callback)
+      .catch(logError);
+  },
+  addComment: function (comment, callback) {
+    return axios
+      .post(routes.CREATE_COMMENT_URL, comment)
+      .then(unwrapData)
+      .then(callback)
+      .catch(logError);
+  },
 };
 
 export default apiClient;
