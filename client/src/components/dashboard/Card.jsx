@@ -7,7 +7,7 @@ import CardEditingTitle from "./CardEditingTitle";
 import DescriptionForm from "./DescriptionForm";
 import CommentForm from "./CommentForm";
 import ArchiveHeader from "./ArchiveHeader";
-import DueDateLabel from "./DueDateLabel";
+import DueDateDisplayLabel from "./DueDateDisplayLabel";
 import Popover from "../shared/Popover";
 import DueDatePopup from "./DueDatePopup";
 
@@ -130,7 +130,7 @@ const Card = () => {
                       <i className="plus-icon sm-icon"></i>
                     </div>
                   </li>
-                  {card.dueDate && <DueDateLabel card={card} />}
+                  {card.dueDate && <DueDateDisplayLabel card={card} />}
                 </ul>
                 <DescriptionForm card={card} id={id} />
               </li>

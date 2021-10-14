@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 
-const DueDateLabel = ({ card }) => {
+const DueDateDisplayLabel = ({ card }) => {
   const isOverDue = new Date() < new Date(card.dueDate);
 
   return (
@@ -26,4 +26,4 @@ const DueDateLabel = ({ card }) => {
   );
 };
 
-export default DueDateLabel;
+export default DueDateDisplayLabel;
