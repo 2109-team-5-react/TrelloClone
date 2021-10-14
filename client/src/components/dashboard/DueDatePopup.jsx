@@ -16,7 +16,6 @@ class DueDatePopup extends React.Component {
       container: document.getElementById("calendar-widget"),
       firstDay: 1,
       yearRange: 10,
-      // defaultDate: moment().add(2, "day").toDate(),
       defaultDate: dateToShow,
       setDefaultDate: true,
       format: "M/D/YYYY",
@@ -56,26 +55,36 @@ class DueDatePopup extends React.Component {
   }
 
   render() {
-    // console.log(this.props.dueDate);
+    const closePopup = () => {
+      this.props.setPopover(this.props.initialPopover);
+    };
+
     const handleSubmitDate = (e) => {
       e.preventDefault();
-      // console.log(this.picker.getDate());
+      updateCardDate(this.picker.getDate());
+      closePopup();
+    };
 
+    const updateCardDate = (date = null) => {
       let updatedCard = {
         card: {
-          dueDate: this.picker.getDate(),
+          dueDate: date,
         },
       };
       this.props.dispatch(updateCard(this.props.id, updatedCard));
-      this.props.setPopover(this.props.initialPopover);
-      // dispatch;
+    };
+
+    const handleRemoveDate = (e) => {
+      e.preventDefault();
+      updateCardDate();
+      closePopup();
     };
 
     return (
       <>
         <header>
           <span>Change due date</span>
-          <a href="#" className="icon-sm icon-close"></a>
+          <a href="#" className="icon-sm icon-close" onClick={closePopup}></a>
         </header>
         <div className="content">
           <form>
@@ -101,7 +110,11 @@ class DueDatePopup extends React.Component {
             <button className="button" type="submit" onClick={handleSubmitDate}>
               Save
             </button>
-            <button className="button red-button" type="reset">
+            <button
+              className="button red-button"
+              type="reset"
+              onClick={handleRemoveDate}
+            >
               Remove
             </button>
           </form>

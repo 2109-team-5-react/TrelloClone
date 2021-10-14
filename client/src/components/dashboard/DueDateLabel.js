@@ -1,18 +1,26 @@
 import React from "react";
+import moment from "moment";
 
 const DueDateLabel = ({ card }) => {
+  const isOverDue = new Date() < new Date(card.dueDate);
+
   return (
     <li className="due-date-section">
       <h3>Due Date</h3>
-      <div id="dueDateDisplay" className="overdue completed">
+      <div
+        id="dueDateDisplay"
+        className={`${isOverDue ? "overdue" : ""} ${
+          card.completed ? "completed" : ""
+        }`}
+      >
         <input
           id="dueDateCheckbox"
           type="checkbox"
           className="checkbox"
-          checked=""
+          checked={card.completed}
         />
-        {card.dueDate}
-        <span>(past due)</span>
+        {moment(card.dueDate).format("MMM D [at] h:mm a")}
+        {isOverDue && <span>&nbsp;(past due)</span>}
       </div>
     </li>
   );
