@@ -18,10 +18,14 @@ export default function comments(state = [], action) {
     //   return comments;
     // }
     case "FETCH_CARD_SUCCESS": {
-      return [...action.card.comments];
+      return [...action.card.comments].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
     }
     case "CREATE_COMMENT_SUCCESS": {
-      return state.concat(action.comment);
+      return state
+        .concat(action.comment)
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     }
     default:
       return state;

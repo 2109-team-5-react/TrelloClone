@@ -7,6 +7,7 @@ const CommentForm = ({ card }) => {
   const dispatch = useDispatch();
 
   const handleSaveComment = () => {
+    if (commentText.length === 0) return;
     const comment = {
       cardId: card._id,
       comment: {
@@ -43,7 +44,9 @@ const CommentForm = ({ card }) => {
             <div>
               <input
                 type="submit"
-                className="button not-implemented"
+                className={`button ${
+                  commentText.length ? "" : "not-implemented"
+                }`}
                 value="Save"
                 onClick={handleSaveComment}
               />

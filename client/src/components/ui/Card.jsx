@@ -1,5 +1,5 @@
 import React from "react";
-const Card = () => {
+const uiCard = () => {
   return (
     <div id="modal-container">
       <div className="screen"></div>
@@ -46,7 +46,7 @@ const Card = () => {
                 </li>
                 <li className="due-date-section">
                   <h3>Due Date</h3>
-                  <div id="dueDateDisplay" className="overdue completed">
+                  <div id="dueDateDisplay" className="">
                     <input
                       id="dueDateCheckbox"
                       type="checkbox"
@@ -147,8 +147,9 @@ const Card = () => {
                     <div className="card-member small-size">VR</div>
                   </div>
                   <p>
-                    <span className="member-name">Victor Reyes</span> changed the
-                    background of this board <small>yesterday at 4:53 PM</small>
+                    <span className="member-name">Victor Reyes</span> changed
+                    the background of this board{" "}
+                    <small>yesterday at 4:53 PM</small>
                   </p>
                 </li>
                 <li className="activity-comment">
@@ -234,4 +235,4 @@ const Card = () => {
   );
 };
 
-export default Card;
+export default uiCard;
