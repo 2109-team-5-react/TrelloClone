@@ -10,6 +10,8 @@ import ArchiveHeader from "./ArchiveHeader";
 import DueDateDisplayLabel from "./DueDateDisplayLabel";
 import Popover from "../shared/Popover";
 import DueDatePopup from "./DueDatePopup";
+import LabelPopup from "./LabelPopup";
+import ModalLabel from "./ModalLabel";
 
 const Card = () => {
   const initialPopover = {
@@ -36,6 +38,20 @@ const Card = () => {
   const toggleArchive = () => {
     setArchiveClicked(!archiveClicked);
   };
+
+  const handleCloseLabel = () => {
+    setPopover(initialPopover)
+  }
+
+  const handleLabelPopover = (e) => {
+    console.log('hallo')
+    const labelPopover = {
+      type: 'labels',
+      visible: true,
+      attachedTo: e.target
+    }
+    setPopover(labelPopover)
+  }
 
   const handleCloseModal = () => {
     if (archiveClicked) handleUltimateArchive();
@@ -82,6 +98,13 @@ const Card = () => {
               // onRemove={handleDueDateRemove}
             />
           );
+        case "labels":
+          return (
+            <LabelPopup 
+            handleCloseLabel={handleCloseLabel}
+            card={card}
+            />
+          );
       }
     }
   }, [popover.type, popover.visible]);
@@ -108,25 +131,8 @@ const Card = () => {
                 <ul className="modal-details-list">
                   <li className="labels-section">
                     <h3>Labels</h3>
-                    <div className="member-container">
-                      <div className="green label colorblindable"></div>
-                    </div>
-                    <div className="member-container">
-                      <div className="yellow label colorblindable"></div>
-                    </div>
-                    <div className="member-container">
-                      <div className="orange label colorblindable"></div>
-                    </div>
-                    <div className="member-container">
-                      <div className="blue label colorblindable"></div>
-                    </div>
-                    <div className="member-container">
-                      <div className="purple label colorblindable"></div>
-                    </div>
-                    <div className="member-container">
-                      <div className="red label colorblindable"></div>
-                    </div>
-                    <div className="member-container">
+                    {card.labels.map(l => <ModalLabel color={l} key={l} />)}
+                    <div className="member-container" onClick={handleLabelPopover}>
                       <i className="plus-icon sm-icon"></i>
                     </div>
                   </li>
@@ -228,7 +234,7 @@ const Card = () => {
               <li className="member-button">
                 <i className="person-icon sm-icon"></i>Members
               </li>
-              <li className="label-button">
+              <li className="label-button" onClick={handleLabelPopover}>
                 <i className="label-icon sm-icon"></i>Labels
               </li>
               <li className="checklist-button">

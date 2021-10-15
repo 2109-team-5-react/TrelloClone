@@ -1,9 +1,19 @@
 import React from "react";
 import moment from "moment";
+import { useDispatch} from "react-redux"
+import { updateCard } from "../../actions/CardActions"
 
 const DueDateDisplayLabel = ({ card }) => {
-  const isOverDue = new Date() < new Date(card.dueDate);
-
+  const isOverDue = new Date() > new Date(card.dueDate);
+  const dispatch = useDispatch()
+  const handleToggleComplete = () => {
+    const updatedCard = {
+      "card": {
+        "completed": !card.completed
+      }
+    }
+    dispatch(updateCard(card._id, updatedCard))
+  }
   return (
     <li className="due-date-section">
       <h3>Due Date</h3>
@@ -12,6 +22,7 @@ const DueDateDisplayLabel = ({ card }) => {
         className={`${isOverDue ? "overdue" : ""} ${
           card.completed ? "completed" : ""
         }`}
+        onClick={handleToggleComplete}
       >
         <input
           id="dueDateCheckbox"

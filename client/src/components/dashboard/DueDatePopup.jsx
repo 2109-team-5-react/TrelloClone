@@ -62,6 +62,7 @@ class DueDatePopup extends React.Component {
     const handleSubmitDate = (e) => {
       e.preventDefault();
       updateCardDate(this.picker.getDate());
+      console.log(this.picker.getDate())
       closePopup();
     };
 
